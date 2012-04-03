@@ -4,7 +4,9 @@
  */
 package smallestcut;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 
 /**
  *
@@ -12,6 +14,7 @@ import java.util.*;
  */
 public class graphCutter {
     ArrayList<ArrayList<Integer>> arraylist;
+    private Random generator = new Random();
     // designed for only a 40 by 40 list
     
     public graphCutter(int[][] arraylist){
@@ -25,10 +28,41 @@ public class graphCutter {
         }
     }
     
-//TODO: Recursive cutting function
+    public void randomContraction(){
+        int a = 0;
+        int b;
+        if (arraylist.size() > 2){
+        // base case
+        }
+        else
+            a = generator.nextInt(arraylist.size()-1);
+            b = a;
+            while (a == b && (a!=b && !edgeExists(a,b))){
+                b = generator.nextInt(arraylist.size()-1);
+            }
+            mergeNode(a,b);
+            randomContraction();
+    }
     
-// TODO: property to count min cut
+    public int mincut(){
+        if (arraylist.size() > 2 || arraylist.size() == 0){
+            return -1;
+        }
+        else
+            return arraylist.get(0).get(0);
+    }
 
+
+    private boolean edgeExists(int a, int b){
+        if (a < arraylist.size() || b < arraylist.size())
+            return false;
+
+        else if (arraylist.get(a).get(b) > 0)
+            return true;
+        else
+    return false;
+    }
+    
     private void mergeNode(int a, int b){
         for (int i = 0; i < arraylist.get(a).size(); i++){
             int avalue = arraylist.get(a).get(i);
