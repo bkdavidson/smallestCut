@@ -26,6 +26,7 @@ public class SmallestCut {
             Logger.getLogger(SmallestCut.class.getName()).log(Level.SEVERE, null, ex);
             intArray = null;
         }
+        System.out.println(minCut.calcMinCut(intArray));
         
         
         

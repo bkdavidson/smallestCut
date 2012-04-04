@@ -18,13 +18,12 @@ public class graphCutter {
     // designed for only a 40 by 40 list
     
     public graphCutter(int[][] arraylist){
+        this.arraylist = new ArrayList<>();
         for (int i = 0; i < arraylist.length; i++){
-            for(int j = 0; j < arraylist[i].length; j++){
-                ArrayList<Integer> alist = new ArrayList<>();
+            ArrayList<Integer> alist = new ArrayList<>();
+            for(int j = 0; j < arraylist[i].length; j++)
                 alist.add(arraylist[i][j]);
-                this.arraylist.add(alist);
-            }
-
+            this.arraylist.add(alist);
         }
     }
     
