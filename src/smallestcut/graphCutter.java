@@ -91,7 +91,10 @@ public class graphCutter {
     }
     
     private void mergeNode(ArrayList<Integer> a, ArrayList<Integer> b){ //merges a and b in place at A
+        int aindex = this.arraylist.indexOf(a);
+        int bindex = this.arraylist.indexOf(b);
         edges.remove(getEdge(a,b)); //remove the self reference
+        edges.remove(getEdge(b,a)); //remove the self reference
         Iterator<edge> itr2 = edges.iterator();
             while(itr2.hasNext()){ //iterate through all edges and remove references to b, replacing them with a
                 edge anEdge = itr2.next();
@@ -108,15 +111,15 @@ public class graphCutter {
                 avalue = bvalue = 0; // set to zero to remove self-referencing edge
             int newvalue = avalue + bvalue; //sum values to account for parrallel edges
             a.set(i, newvalue); // set the number of edges in 'A' to 'i' as the number of edges
-            arraylist.get(i).set(this.arraylist.indexOf(a),newvalue); // set the number of edges in 'I' to 'a'as the number of edges
+            arraylist.get(i).set(aindex,newvalue); // set the number of edges in 'I' to 'a'as the number of edges
         }
         a.set(this.arraylist.indexOf(a),-1); // self reference is -1
         Iterator<ArrayList<Integer>> itr = arraylist.iterator();
         while (itr.hasNext()){ //remove b from all nodes
             ArrayList<Integer> workit = itr.next();
-            workit.remove(this.arraylist.indexOf(b));    // removal of references to b from each arraylist in this.arraylist
+            workit.remove(bindex);    // removal of references to b from each arraylist in this.arraylist
         }
-        arraylist.remove(b); // remove of the arraylist for 
+         arraylist.remove(bindex); // remove of the arraylist B
    
     }
         
