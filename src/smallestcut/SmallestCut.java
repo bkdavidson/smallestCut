@@ -27,9 +27,9 @@ public class SmallestCut {
             intArray = null;
         }
 //        int[][] intArray  = {
-//            {-1,1,1,1},
-//            {1,-1,0,1},
-//            {1,0,-1,1},
+//            {-1,1,0,1},
+//            {1,-1,1,1},
+//            {0,1,-1,1},
 //            {1,1,1,-1}
 //        };
         int x = minCut.calcMinCut(intArray);

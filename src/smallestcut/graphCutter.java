@@ -13,32 +13,49 @@ import java.util.Random;
  * @author davidson_b
  */
 public class graphCutter {
-    ArrayList<ArrayList<Integer>> arraylist;
+    private ArrayList<ArrayList<Integer>> arraylist;
+    private ArrayList<edge> edges;
     private Random generator = new Random();
     // designed for only a 40 by 40 list
     
     public graphCutter(int[][] arraylist){
         this.arraylist = new ArrayList<>(); //initialize
+        edges = new ArrayList<>();
         for (int i = 0; i < arraylist.length; i++){ //copy the array into arraylist
             ArrayList<Integer> alist = new ArrayList<>(); //initialize inner arraylist to go inside outer arraylist
-            for(int j = 0; j < arraylist[i].length; j++)
+            for(int j = 0; j < arraylist[i].length; j++){
                 alist.add(arraylist[i][j]); //populate with values
+            }                
             this.arraylist.add(alist); //tag it onto outer arraylist
         }
+        Iterator<ArrayList<Integer>> itr = this.arraylist.iterator();
+                while (itr.hasNext()){ //iterate through the arraylists (inner ones)
+                    ArrayList<Integer> temp = itr.next();
+                    for (int k = 0; k < temp.size(); k ++){//iterate through the integer values inside each arraylist
+                        if (temp.get(k) > 0) // if there is an edge, make an edge!
+                            addEdge(temp,this.arraylist.get(k));
+                    }
+                }
     }
+    
+    private void addEdge(ArrayList<Integer> a, ArrayList<Integer> b){
+        if(this.arraylist.indexOf(a)<this.arraylist.indexOf(b) ) //order by index
+            if (!edgeExists(a,b))
+                edges.add(new edge(a,b));
+        else //make sure the smaller index is first in edge constructor
+            if (!edgeExists(b,a))
+            edges.add(new edge(b,a));
+    }
+     
     
     public void randomContraction(){
         int a = 0;
         int b = 0;
-        boolean flag = true; // used for while loop
         if(arraylist.size() > 2){ 
-            a = generator.nextInt(arraylist.size()-1); //randon number for a
-            b = Integer.valueOf(a); //initialize b
-            while ((flag || !edgeExists(a,b))){ //always run at least once (for flag), and keep running if a and b share an edge
-                flag = false;
-                b = generator.nextInt(arraylist.size()-1);
-            }
-            mergeNode(a,b); //merge A and B since there are different (while loop) and share an edge
+            edge randomEdge = edges.get(generator.nextInt(edges.size())); //random edge picker
+            a = this.arraylist.indexOf(randomEdge.a);
+            b = this.arraylist.indexOf(randomEdge.b);
+            mergeNode(this.arraylist.indexOf(randomEdge.a),this.arraylist.indexOf(randomEdge.b)); //merge A and B since there are different (while loop) and share an edge
             randomContraction(); //recursively run me
         }
     }
@@ -52,14 +69,42 @@ public class graphCutter {
     }
 
 
-    private boolean edgeExists(int a, int b){
-        if (arraylist.get(a).get(b) > 0) // if they have an edge
-            return true;
-        else //otherwise you don't have an edge
-            return false;
+    private boolean edgeExists(ArrayList<Integer> a, ArrayList<Integer> b){
+        boolean answer = false;
+        Iterator<edge> itr = edges.iterator();
+                while(itr.hasNext()){
+                    edge anEdge = itr.next();
+                    if (anEdge.a.equals(a) && anEdge.b.equals(b))
+                        answer = true;
+                }
+        return answer;
+    }
+    private edge getEdge(int a, int b){
+        edge answer = null;
+        if (a > 0 && b > 0 && java.lang.Math.max(a, b) <= this.arraylist.size() &&
+                edgeExists(this.arraylist.get(java.lang.Math.min(a,b)),this.arraylist.get(java.lang.Math.max(b,a)))){ //proper order is reason for min and max
+                    Iterator<edge> itr = edges.iterator();
+                        while(itr.hasNext()){
+                            edge anEdge = itr.next();
+                            if (anEdge.a == this.arraylist.get(java.lang.Math.min(a,b)) && anEdge.b == this.arraylist.get(java.lang.Math.max(b,a)))
+                            answer = anEdge;
+                }
+        }
+        return answer;                        
     }
     
     private void mergeNode(int a, int b){ //merges a and b in place at A
+        edges.remove(getEdge(a,b)); //remove the self reference
+        edges.remove(getEdge(b,a)); //remove the self reference
+        Iterator<edge> itr2 = edges.iterator();
+            while(itr2.hasNext()){ //iterate through all edges
+                edge anEdge = itr2.next();
+                if (anEdge.a == this.arraylist.get(b) ) // if node b is in edge spot 1
+                    anEdge.a = this.arraylist.get(a); //replace reference to b with a reference to a
+                else if (anEdge.b == this.arraylist.get(b) ) //if node b is in edge spot 2
+                    anEdge.b = this.arraylist.get(a); //replace reference to b with a reference to a                        
+            } 
+            
         for (int i = 0; i < arraylist.get(a).size(); i++){
             int avalue = arraylist.get(a).get(i); // number of edges to node i in a
             int bvalue =  arraylist.get(b).get(i); // as above, but in b
@@ -75,9 +120,22 @@ public class graphCutter {
             ArrayList<Integer> workit = itr.next();
             workit.remove(b);    // removal of references to b from each arraylist in this.arraylist
         }
-        arraylist.remove(b); // remove of the arraylist for b
+        arraylist.remove(b); // remove of the arraylist for 
+   
     }
         
+
+    private class edge{
+        public ArrayList<Integer> a;
+        public ArrayList<Integer> b;
+        //public int count;
+        
+        public edge(ArrayList<Integer> a, ArrayList<Integer> b){
+            this.a = a;
+            this.b = b;
+            //count = 1;
+        }
+    }
 }
     
     

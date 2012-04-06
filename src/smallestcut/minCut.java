@@ -13,7 +13,7 @@ public class minCut {
         int answer = -1; // needed for test below
         
         if (arraylist.length >= 2){ 
-            for(int i = arraylist.length; i < (java.lang.Math.log(arraylist.length)*java.lang.Math.pow(arraylist.length*arraylist.length,2)); i++){
+            for(int i = arraylist.length; i < (java.lang.Math.log(arraylist.length)*java.lang.Math.pow(arraylist.length,2)); i++){
                 // run this bad boy log(n)*n^2 times, remember n = edge count, so n = arraylistLength squared as worst case
                 graphCutter aGraphCutter = new graphCutter(arraylist);
                 aGraphCutter.randomContraction();
