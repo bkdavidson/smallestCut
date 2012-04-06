@@ -39,9 +39,15 @@ public class FileArrayProvider {
                     else if (amIN  && !Character.isWhitespace(stringline.charAt(j))){
                         temp = Character.getNumericValue(stringline.charAt(j)) + temp *(int) java.lang.Math.pow(10,exp);
                         exp++;
-                        i++; 
+                        i++;
+                        if (j+1 == stringline.length()){
+                            if (temp!= 0){
+                                    intArray[k][temp-1] = 1;
+                                    intArray[k][k] = -1;
+                            }  
+                        }
                     }
-                    else if (amIN  && (Character.isWhitespace(stringline.charAt(j)) || j == stringline.length())){
+                    else if (amIN  && Character.isWhitespace(stringline.charAt(j))){
                         exp = 0;
                         if (temp!= 0){
                                 intArray[k][temp-1] = 1;

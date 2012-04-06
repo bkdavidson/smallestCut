@@ -31,7 +31,7 @@ public class graphCutter {
         int a = 0;
         int b = 0;
         boolean flag = true;
-       if(arraylist.size() > 2){
+        if(arraylist.size() > 2){
             a = generator.nextInt(arraylist.size()-1);
             b = Integer.valueOf(a);
             while ((flag || a == b)){
@@ -63,6 +63,8 @@ public class graphCutter {
         for (int i = 0; i < arraylist.get(a).size(); i++){
             int avalue = arraylist.get(a).get(i);
             int bvalue =  arraylist.get(b).get(i);
+            if (avalue  == -1 || bvalue == -1)
+                avalue = bvalue = 0;
             avalue = java.lang.Math.max(avalue, 0);
             bvalue = java.lang.Math.max(bvalue, 0);
             int newvalue = avalue + bvalue;
