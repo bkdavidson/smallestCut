@@ -13,7 +13,7 @@ public class minCut {
         int answer = -1;
         
         if (arraylist.length >= 2){
-            for(int i = arraylist.length; i < (java.lang.Math.pow(arraylist.length,2)); i++){
+            for(int i = arraylist.length; i < (java.lang.Math.log(arraylist.length)*java.lang.Math.pow(arraylist.length*arraylist.length,2)); i++){
                 graphCutter aGraphCutter = new graphCutter(arraylist);
                 aGraphCutter.randomContraction();
                 if (answer == -1 || answer > aGraphCutter.mincut())

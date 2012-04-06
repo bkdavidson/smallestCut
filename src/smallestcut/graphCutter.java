@@ -34,7 +34,7 @@ public class graphCutter {
         if(arraylist.size() > 2){
             a = generator.nextInt(arraylist.size()-1);
             b = Integer.valueOf(a);
-            while ((flag || a == b)){
+            while ((flag || !edgeExists(a,b))){
                 flag = false;
                 b = generator.nextInt(arraylist.size()-1);
             }
@@ -65,8 +65,6 @@ public class graphCutter {
             int bvalue =  arraylist.get(b).get(i);
             if (avalue  == -1 || bvalue == -1)
                 avalue = bvalue = 0;
-            avalue = java.lang.Math.max(avalue, 0);
-            bvalue = java.lang.Math.max(bvalue, 0);
             int newvalue = avalue + bvalue;
             arraylist.get(a).set(i, newvalue);
             arraylist.get(i).set(a,newvalue);
@@ -76,7 +74,6 @@ public class graphCutter {
         Iterator<ArrayList<Integer>> itr = arraylist.iterator();
         while (itr.hasNext()){ //remove b from all nodes
             ArrayList<Integer> workit = itr.next();
-            //workit.set(a, workit.get(b)+workit.get(a));
             workit.remove(b);    
         }
         arraylist.remove(b);

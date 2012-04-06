@@ -26,7 +26,12 @@ public class SmallestCut {
             Logger.getLogger(SmallestCut.class.getName()).log(Level.SEVERE, null, ex);
             intArray = null;
         }
-
+//        int[][] intArray  = {
+//            {-1,1,1,1},
+//            {1,-1,0,1},
+//            {1,0,-1,1},
+//            {1,1,1,-1}
+//        };
         int x = minCut.calcMinCut(intArray);
         System.out.println(x);
         
