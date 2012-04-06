@@ -68,7 +68,8 @@ public class graphCutter {
             avalue = java.lang.Math.max(avalue, 0);
             bvalue = java.lang.Math.max(bvalue, 0);
             int newvalue = avalue + bvalue;
-            arraylist.get(a).set(i, newvalue);       
+            arraylist.get(a).set(i, newvalue);
+            arraylist.get(i).set(a,newvalue);
         }
         arraylist.get(a).set(a,-1);
         arraylist.get(a).set(b,0);
