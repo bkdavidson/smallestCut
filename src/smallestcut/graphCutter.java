@@ -53,9 +53,7 @@ public class graphCutter {
         int b = 0;
         if(arraylist.size() > 2){ 
             edge randomEdge = edges.get(generator.nextInt(edges.size())); //random edge picker
-            a = this.arraylist.indexOf(randomEdge.a);
-            b = this.arraylist.indexOf(randomEdge.b);
-            mergeNode(this.arraylist.indexOf(randomEdge.a),this.arraylist.indexOf(randomEdge.b)); //merge A and B since there are different (while loop) and share an edge
+            mergeNode(randomEdge.a,randomEdge.b); //merge A and B since there are different (while loop) and share an edge
             randomContraction(); //recursively run me
         }
     }
@@ -74,51 +72,49 @@ public class graphCutter {
         Iterator<edge> itr = edges.iterator();
                 while(itr.hasNext()){
                     edge anEdge = itr.next();
-                    if (anEdge.a.equals(a) && anEdge.b.equals(b))
+                    if ((anEdge.a.equals(a) && anEdge.b.equals(b)) || anEdge.a.equals(b) && anEdge.b.equals(a) )
                         answer = true;
                 }
         return answer;
     }
-    private edge getEdge(int a, int b){
+    private edge getEdge(ArrayList<Integer> a, ArrayList<Integer> b){
         edge answer = null;
-        if (a > 0 && b > 0 && java.lang.Math.max(a, b) <= this.arraylist.size() &&
-                edgeExists(this.arraylist.get(java.lang.Math.min(a,b)),this.arraylist.get(java.lang.Math.max(b,a)))){ //proper order is reason for min and max
+        if (edgeExists(a,b)){ //proper order is reason for min and max
                     Iterator<edge> itr = edges.iterator();
                         while(itr.hasNext()){
                             edge anEdge = itr.next();
-                            if (anEdge.a == this.arraylist.get(java.lang.Math.min(a,b)) && anEdge.b == this.arraylist.get(java.lang.Math.max(b,a)))
-                            answer = anEdge;
+                            if ((anEdge.a == a && anEdge.b == b)||(anEdge.a == b && anEdge.b == a))
+                                answer = anEdge;
                 }
         }
         return answer;                        
     }
     
-    private void mergeNode(int a, int b){ //merges a and b in place at A
+    private void mergeNode(ArrayList<Integer> a, ArrayList<Integer> b){ //merges a and b in place at A
         edges.remove(getEdge(a,b)); //remove the self reference
-        edges.remove(getEdge(b,a)); //remove the self reference
         Iterator<edge> itr2 = edges.iterator();
-            while(itr2.hasNext()){ //iterate through all edges
+            while(itr2.hasNext()){ //iterate through all edges and remove references to b, replacing them with a
                 edge anEdge = itr2.next();
-                if (anEdge.a == this.arraylist.get(b) ) // if node b is in edge spot 1
-                    anEdge.a = this.arraylist.get(a); //replace reference to b with a reference to a
-                else if (anEdge.b == this.arraylist.get(b) ) //if node b is in edge spot 2
-                    anEdge.b = this.arraylist.get(a); //replace reference to b with a reference to a                        
+                if (anEdge.a == b ) // if node b is in edge spot 1
+                    anEdge.a = a; //replace reference to b with a reference to a
+                else if (anEdge.b == b ) //if node b is in edge spot 2
+                    anEdge.b = a; //replace reference to b with a reference to a                        
             } 
             
-        for (int i = 0; i < arraylist.get(a).size(); i++){
-            int avalue = arraylist.get(a).get(i); // number of edges to node i in a
-            int bvalue =  arraylist.get(b).get(i); // as above, but in b
+        for (int i = 0; i < a.size(); i++){
+            int avalue = a.get(i); // number of edges to node i in a
+            int bvalue =  b.get(i); // as above, but in b
             if (avalue  == -1 || bvalue == -1) // if node references self
                 avalue = bvalue = 0; // set to zero to remove self-referencing edge
             int newvalue = avalue + bvalue; //sum values to account for parrallel edges
-            arraylist.get(a).set(i, newvalue); // set the number of edges in 'A' to 'i' as the number of edges
-            arraylist.get(i).set(a,newvalue); // set the number of edges in 'I' to 'a'as the number of edges
+            a.set(i, newvalue); // set the number of edges in 'A' to 'i' as the number of edges
+            arraylist.get(i).set(this.arraylist.indexOf(a),newvalue); // set the number of edges in 'I' to 'a'as the number of edges
         }
-        arraylist.get(a).set(a,-1); // self reference is -1
+        a.set(this.arraylist.indexOf(a),-1); // self reference is -1
         Iterator<ArrayList<Integer>> itr = arraylist.iterator();
         while (itr.hasNext()){ //remove b from all nodes
             ArrayList<Integer> workit = itr.next();
-            workit.remove(b);    // removal of references to b from each arraylist in this.arraylist
+            workit.remove(this.arraylist.indexOf(b));    // removal of references to b from each arraylist in this.arraylist
         }
         arraylist.remove(b); // remove of the arraylist for 
    
