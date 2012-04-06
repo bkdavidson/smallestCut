@@ -29,37 +29,34 @@ public class graphCutter {
     
     public void randomContraction(){
         int a = 0;
-        int b;
-        if (arraylist.size() > 2){
-        // base case
-        }
-        else
+        int b = 0;
+        boolean flag = true;
+       if(arraylist.size() > 2){
             a = generator.nextInt(arraylist.size()-1);
-            b = a;
-            while (a == b && (a!=b && !edgeExists(a,b))){
+            b = Integer.valueOf(a);
+            while ((flag || a == b)){
+                flag = false;
                 b = generator.nextInt(arraylist.size()-1);
             }
             mergeNode(a,b);
             randomContraction();
+        }
     }
     
     public int mincut(){
-        if (arraylist.size() > 2 || arraylist.size() == 0){
+        if (arraylist.size() > 2 || arraylist.isEmpty()){
             return -1;
         }
         else
-            return arraylist.get(0).get(0);
+            return arraylist.get(0).get(1);
     }
 
 
     private boolean edgeExists(int a, int b){
-        if (a < arraylist.size() || b < arraylist.size())
-            return false;
-
-        else if (arraylist.get(a).get(b) > 0)
+        if (arraylist.get(a).get(b) > 0)
             return true;
         else
-    return false;
+            return false;
     }
     
     private void mergeNode(int a, int b){
@@ -73,13 +70,13 @@ public class graphCutter {
         }
         arraylist.get(a).set(a,-1);
         arraylist.get(a).set(b,0);
-        arraylist.remove(b);
         Iterator<ArrayList<Integer>> itr = arraylist.iterator();
-        while (itr.hasNext()){
+        while (itr.hasNext()){ //remove b from all nodes
             ArrayList<Integer> workit = itr.next();
-            workit.set(a, workit.get(b)+workit.get(a));
-            workit.remove(b);
+            //workit.set(a, workit.get(b)+workit.get(a));
+            workit.remove(b);    
         }
+        arraylist.remove(b);
     }
         
 }

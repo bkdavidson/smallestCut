@@ -24,18 +24,24 @@ public class FileArrayProvider {
                 int temp = 0;
                 for (int j = 0; j < stringline.length(); j++){
                     if (amIN == false && Character.isWhitespace(stringline.charAt(j))){}
-                    else if (amIN == false && !Character.isWhitespace(stringline.charAt(j))){
+                    else if (amIN == false && (!Character.isWhitespace(stringline.charAt(j)) || j == stringline.length())){
                         amIN = true;
                         temp = Character.getNumericValue(stringline.charAt(j));
                         exp++;
                         i++; 
+                        if (j == stringline.length()){
+                            if (temp!= 0){
+                                    intArray[k][temp-1] = 1;
+                                    intArray[k][k] = -1;
+                            }  
+                        }
                     }
-                    else if (amIN == true && !Character.isWhitespace(stringline.charAt(j))){
+                    else if (amIN  && !Character.isWhitespace(stringline.charAt(j))){
                         temp = Character.getNumericValue(stringline.charAt(j)) + temp *(int) java.lang.Math.pow(10,exp);
                         exp++;
                         i++; 
                     }
-                    else if (amIN == true && Character.isWhitespace(stringline.charAt(j))){
+                    else if (amIN  && (Character.isWhitespace(stringline.charAt(j)) || j == stringline.length())){
                         exp = 0;
                         if (temp!= 0){
                                 intArray[k][temp-1] = 1;
@@ -43,6 +49,9 @@ public class FileArrayProvider {
                         }
                         temp = 0;
                         amIN = false;
+                    }
+                    else if(j == stringline.length() &&  amIN){
+                        
                     }
                 }
                 k++;
