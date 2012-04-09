@@ -7,6 +7,7 @@ package smallestcut;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.*;
 
 /**
  *
@@ -40,17 +41,15 @@ public class graphCutter {
     
     private void addEdge(ArrayList<Integer> a, ArrayList<Integer> b){
         if(this.arraylist.indexOf(a)<this.arraylist.indexOf(b) ) //order by index
-            if (!edgeExists(a,b))
+            if (!edgeExists(b,a) && !edgeExists(a,b))
                 edges.add(new edge(a,b));
         else //make sure the smaller index is first in edge constructor
-            if (!edgeExists(b,a))
+            if (!edgeExists(b,a) && !edgeExists(a,b))
             edges.add(new edge(b,a));
     }
      
     
     public void randomContraction(){
-        int a = 0;
-        int b = 0;
         if(arraylist.size() > 2){ 
             edge randomEdge = edges.get(generator.nextInt(edges.size())); //random edge picker
             mergeNode(randomEdge.a,randomEdge.b); //merge A and B since there are different (while loop) and share an edge
@@ -72,7 +71,7 @@ public class graphCutter {
         Iterator<edge> itr = edges.iterator();
                 while(itr.hasNext()){
                     edge anEdge = itr.next();
-                    if ((anEdge.a.equals(a) && anEdge.b.equals(b)) || anEdge.a.equals(b) && anEdge.b.equals(a) )
+                    if ((anEdge.a.equals(a) && anEdge.b.equals(b)) || (anEdge.a.equals(b) && anEdge.b.equals(a)) )
                         answer = true;
                 }
         return answer;
@@ -90,19 +89,26 @@ public class graphCutter {
         return answer;                        
     }
     
-    private void mergeNode(ArrayList<Integer> a, ArrayList<Integer> b){ //merges a and b in place at A
+    private void mergeNode(ArrayList<Integer> a, ArrayList<Integer> b){ //merges 'a' and 'b' in place at 'a'
         int aindex = this.arraylist.indexOf(a);
         int bindex = this.arraylist.indexOf(b);
-        edges.remove(getEdge(a,b)); //remove the self reference
-        edges.remove(getEdge(b,a)); //remove the self reference
+        //edges.remove(getEdge(a,b)); //
+        //edges.remove(getEdge(b,a)); //find out why iterator would bring this back (weird bug)
         Iterator<edge> itr2 = edges.iterator();
-            while(itr2.hasNext()){ //iterate through all edges and remove references to b, replacing them with a
-                edge anEdge = itr2.next();
-                if (anEdge.a == b ) // if node b is in edge spot 1
-                    anEdge.a = a; //replace reference to b with a reference to a
-                else if (anEdge.b == b ) //if node b is in edge spot 2
-                    anEdge.b = a; //replace reference to b with a reference to a                        
-            } 
+        ArrayDeque<edge> queue = new ArrayDeque<>();
+        while(itr2.hasNext()){ //iterate through all edges and remove references to edge 'b', replacing them with edge 'a'
+            edge anEdge = itr2.next();
+            if (anEdge.a.equals(b) && !anEdge.b.equals(a) ) // if node b is in edge spot 1 and isn't edge (b,a)
+                anEdge.a = a; //replace reference to a with a reference to b 
+            else if (anEdge.b.equals(b) && !anEdge.a.equals(a)) //if node b is in edge spot 2 and isn't edge (a,b)   
+                anEdge.b=a;
+            else if ((anEdge.a.equals(a) && anEdge.b.equals(b)) || (anEdge.a.equals(b) && anEdge.b.equals(a)))
+                itr2.remove(); //this fixes the iterator bug
+           
+        }
+
+        while (!queue.isEmpty())
+            edges.add(queue.pop());  
             
         for (int i = 0; i < a.size(); i++){
             int avalue = a.get(i); // number of edges to node i in a
@@ -116,11 +122,11 @@ public class graphCutter {
         a.set(this.arraylist.indexOf(a),-1); // self reference is -1
         Iterator<ArrayList<Integer>> itr = arraylist.iterator();
         while (itr.hasNext()){ //remove b from all nodes
-            ArrayList<Integer> workit = itr.next();
-            workit.remove(bindex);    // removal of references to b from each arraylist in this.arraylist
+            itr.next().remove(bindex);// removal of references to b from each arraylist in this.arraylist
         }
-         arraylist.remove(bindex); // remove of the arraylist B
-   
+         arraylist.remove(b); // remove of the arraylist B
+         b.clear();
+            
     }
         
 
@@ -134,6 +140,9 @@ public class graphCutter {
             this.b = b;
             //count = 1;
         }
+        
+        
+        
     }
 }
     

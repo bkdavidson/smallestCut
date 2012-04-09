@@ -29,7 +29,7 @@ public class FileArrayProvider {
                         temp = Character.getNumericValue(stringline.charAt(j));
                         exp++;
                         i++; 
-                        if (j == stringline.length()){
+                        if (j == stringline.length()-1){
                             if (temp!= 0){
                                     intArray[k][temp-1] = 1;
                                     intArray[k][k] = -1;
