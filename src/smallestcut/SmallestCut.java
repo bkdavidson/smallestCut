@@ -21,21 +21,11 @@ public class SmallestCut {
         int[][] intArray;
         try {
             intArray = FileArrayProvider.readLines("C:/kargerAdj.txt");
-
         } catch (IOException ex) {
             Logger.getLogger(SmallestCut.class.getName()).log(Level.SEVERE, null, ex);
             intArray = null;
         }
-//        int[][] intArray  = {
-//            {-1,1,0,1},
-//            {1,-1,1,1},
-//            {0,1,-1,1},
-//            {1,1,1,-1}
-//        };
         int x = minCut.calcMinCut(intArray);
-        System.out.println(x);
-        
-        
-        
+        System.out.println(x);     
     }
 }

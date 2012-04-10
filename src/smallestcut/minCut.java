@@ -10,8 +10,7 @@ package smallestcut;
  */
 public class minCut {
     public static int calcMinCut(int[][] arraylist){
-        int answer = -1; // needed for test below
-        
+        int answer = -1; // needed for test below   
         if (arraylist.length >= 2){ 
             for(int i = arraylist.length; i < (java.lang.Math.log(arraylist.length)*java.lang.Math.pow(arraylist.length,2)); i++){
                 // run this bad boy log(n)*n^2 times, remember n = edge count, so n = arraylistLength squared as worst case
@@ -19,9 +18,7 @@ public class minCut {
                 aGraphCutter.randomContraction();
                 if (answer == -1 || answer > aGraphCutter.mincut()) //retain the smallest calculated mincut
                     answer = aGraphCutter.mincut();
-            }
-
-           
+            }   
         }
          return java.lang.Math.max(answer,0); //in case arraylist is size 1, then it has zero min cut
 }

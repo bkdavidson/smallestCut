@@ -92,7 +92,7 @@ public class graphCutter {
     private void mergeNode(ArrayList<Integer> a, ArrayList<Integer> b){ //merges 'a' and 'b' in place at 'a'
         int aindex = this.arraylist.indexOf(a);
         int bindex = this.arraylist.indexOf(b);
-        //edges.remove(getEdge(a,b)); //
+        //edges.remove(getEdge(a,b)); //find out why iterator would bring this back (weird bug) -- just for learning
         //edges.remove(getEdge(b,a)); //find out why iterator would bring this back (weird bug)
         Iterator<edge> itr2 = edges.iterator();
         ArrayDeque<edge> queue = new ArrayDeque<>();
@@ -106,10 +106,8 @@ public class graphCutter {
                 itr2.remove(); //this fixes the iterator bug
            
         }
-
         while (!queue.isEmpty())
-            edges.add(queue.pop());  
-            
+            edges.add(queue.pop());              
         for (int i = 0; i < a.size(); i++){
             int avalue = a.get(i); // number of edges to node i in a
             int bvalue =  b.get(i); // as above, but in b
@@ -121,12 +119,10 @@ public class graphCutter {
         }
         a.set(this.arraylist.indexOf(a),-1); // self reference is -1
         Iterator<ArrayList<Integer>> itr = arraylist.iterator();
-        while (itr.hasNext()){ //remove b from all nodes
+        while (itr.hasNext()) //remove b from all nodes
             itr.next().remove(bindex);// removal of references to b from each arraylist in this.arraylist
-        }
          arraylist.remove(b); // remove of the arraylist B
-         b.clear();
-            
+         b.clear();     
     }
         
 
@@ -139,10 +135,7 @@ public class graphCutter {
             this.a = a;
             this.b = b;
             //count = 1;
-        }
-        
-        
-        
+        }    
     }
 }
     
