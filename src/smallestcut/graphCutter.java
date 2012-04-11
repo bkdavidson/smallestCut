@@ -1,9 +1,9 @@
 package smallestcut;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.*;
 
 public class graphCutter {
     private ArrayList<ArrayList<Integer>> arraylist;
