@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package smallestcut;
 
 import java.util.ArrayList;
@@ -9,16 +5,11 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.*;
 
-/**
- *
- * @author davidson_b
- */
 public class graphCutter {
     private ArrayList<ArrayList<Integer>> arraylist;
     private ArrayList<edge> edges;
     private Random generator = new Random();
-    // designed for only a 40 by 40 list
-    
+    // designed for only a 40 by 40 list 
     public graphCutter(int[][] arraylist){
         this.arraylist = new ArrayList<>(); //initialize
         edges = new ArrayList<>();
@@ -38,7 +29,6 @@ public class graphCutter {
                     }
                 }
     }
-    
     private void addEdge(ArrayList<Integer> a, ArrayList<Integer> b){
         if(this.arraylist.indexOf(a)<this.arraylist.indexOf(b) ) //order by index
             if (!edgeExists(b,a) && !edgeExists(a,b))
@@ -46,17 +36,14 @@ public class graphCutter {
         else //make sure the smaller index is first in edge constructor
             if (!edgeExists(b,a) && !edgeExists(a,b))
             edges.add(new edge(b,a));
-    }
-     
-    
+    } 
     public void randomContraction(){
         if(arraylist.size() > 2){ 
             edge randomEdge = edges.get(generator.nextInt(edges.size())); //random edge picker
             mergeNode(randomEdge.a,randomEdge.b); //merge A and B since there are different (while loop) and share an edge
             randomContraction(); //recursively run me
         }
-    }
-    
+    }   
     public int mincut(){
         if (arraylist.size() > 2 || arraylist.isEmpty()){
             return -1; // there can't be a min cut unless you have 2 nodes
@@ -64,8 +51,6 @@ public class graphCutter {
         else
             return arraylist.get(0).get(1); // the number of edges referring to node at position 1
     }
-
-
     private boolean edgeExists(ArrayList<Integer> a, ArrayList<Integer> b){
         boolean answer = false;
         Iterator<edge> itr = edges.iterator();
@@ -103,8 +88,7 @@ public class graphCutter {
             else if (anEdge.b.equals(b) && !anEdge.a.equals(a)) //if node b is in edge spot 2 and isn't edge (a,b)   
                 anEdge.b=a;
             else if ((anEdge.a.equals(a) && anEdge.b.equals(b)) || (anEdge.a.equals(b) && anEdge.b.equals(a)))
-                itr2.remove(); //this fixes the iterator bug
-           
+                itr2.remove(); //this fixes the iterator bug           
         }
         while (!queue.isEmpty())
             edges.add(queue.pop());              
@@ -124,8 +108,6 @@ public class graphCutter {
          arraylist.remove(b); // remove of the arraylist B
          b.clear();     
     }
-        
-
     private class edge{
         public ArrayList<Integer> a;
         public ArrayList<Integer> b;

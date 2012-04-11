@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package smallestcut;
 
 import java.io.BufferedReader;
@@ -12,8 +8,7 @@ public class FileArrayProvider {
 
     public static int[][] readLines(String filename) throws IOException {
         FileReader fileReader = new FileReader(filename);
-        int[][] intArray = new int[40][40];
-        
+        int[][] intArray = new int[40][40];       
         try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             String stringline = null;
             int i = 0;
@@ -56,8 +51,7 @@ public class FileArrayProvider {
                         temp = 0;
                         amIN = false;
                     }
-                    else if(j == stringline.length() &&  amIN){
-                        
+                    else if(j == stringline.length() &&  amIN){                        
                     }
                 }
                 k++;

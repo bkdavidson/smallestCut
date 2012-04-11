@@ -1,13 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package smallestcut;
 
-/**
- *
- * @author davidson_b
- */
 public class minCut {
     public static int calcMinCut(int[][] arraylist){
         int answer = -1; // needed for test below   
