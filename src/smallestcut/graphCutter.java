@@ -77,21 +77,18 @@ public class graphCutter {
     private void mergeNode(ArrayList<Integer> a, ArrayList<Integer> b){ //merges 'a' and 'b' in place at 'a'
         int aindex = this.arraylist.indexOf(a);
         int bindex = this.arraylist.indexOf(b);
-        edges.remove(getEdge(a,b)); //find out why iterator would bring this back (weird bug) -- just for learning
-        edges.remove(getEdge(b,a)); //find out why iterator would bring this back (weird bug)
+//        edges.remove(getEdge(a,b)); //find out why iterator would bring this back (weird bug) -- just for learning
+//        edges.remove(getEdge(b,a)); //find out why iterator would bring this back (weird bug)
         Iterator<edge> itr2 = edges.iterator();
-        ArrayDeque<edge> queue = new ArrayDeque<>();
         while(itr2.hasNext()){ //iterate through all edges and remove references to edge 'b', replacing them with edge 'a'
             edge anEdge = itr2.next();
             if (anEdge.a.equals(b) && !anEdge.b.equals(a) ) // if node b is in edge spot 1 and isn't edge (b,a)
                 anEdge.a = a; //replace reference to a with a reference to b 
             else if (anEdge.b.equals(b) && !anEdge.a.equals(a)) //if node b is in edge spot 2 and isn't edge (a,b)   
                 anEdge.b=a;
-            //else if ((anEdge.a.equals(a) && anEdge.b.equals(b)) || (anEdge.a.equals(b) && anEdge.b.equals(a)))
-           //     itr2.remove(); //this fixes the iterator bug           
+            else if ((anEdge.a.equals(a) && anEdge.b.equals(b)) || (anEdge.a.equals(b) && anEdge.b.equals(a)))
+                itr2.remove(); //this fixes the iterator bug           
         }
-        while (!queue.isEmpty())
-            edges.add(queue.pop());              
         for (int i = 0; i < a.size(); i++){
             int avalue = a.get(i); // number of edges to node i in a
             int bvalue =  b.get(i); // as above, but in b
