@@ -78,7 +78,7 @@ public class graphCutter {
         int aindex = this.arraylist.indexOf(a);
         int bindex = this.arraylist.indexOf(b);
 //        edges.remove(getEdge(a,b)); //find out why iterator would bring this back (weird bug) -- just for learning
-//        edges.remove(getEdge(b,a)); //find out why iterator would bring this back (weird bug)
+//       edges.remove(getEdge(b,a)); //find out why iterator would bring this back (weird bug)
         Iterator<edge> itr2 = edges.iterator();
         while(itr2.hasNext()){ //iterate through all edges and remove references to edge 'b', replacing them with edge 'a'
             edge anEdge = itr2.next();
