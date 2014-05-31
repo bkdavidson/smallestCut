@@ -15,3 +15,4 @@ public class minCut {
          return java.lang.Math.max(answer,0); //in case arraylist is size 1, then it has zero min cut
 }
 }
+ 
